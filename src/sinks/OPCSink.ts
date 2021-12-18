@@ -32,6 +32,7 @@ export class OPCSink extends BaseSink {
      * @param brightness from 0 to 255
      */
     setBrightness(brightness: number) {
+        let me = this;
         let buf = Buffer.alloc(7);
         // build OPC packet
         buf.writeUInt8(0, 0); // channel
@@ -39,9 +40,8 @@ export class OPCSink extends BaseSink {
         buf.writeUInt16BE(7, 2); // length
         buf.writeUInt16BE(69, 4); // system id
         buf.writeUInt8(brightness, 6); // brightness info
-
         // TODO: not working
-        this.udp.send(buf, this.port, this.ip, function(err, bytes) {
+        me.udp.send(buf, me.port, me.ip, function(err, bytes) {
             if (err) throw err;
         });
     }
